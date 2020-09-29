@@ -1,0 +1,49 @@
+{
+  "name": "jly-slp-2",
+  "version": "1.0.0",
+  "description": "Typexcript React Express Nextjs Material-UI",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon --exec 'ts-node' server.ts",
+    "build": "next build",
+    "build:server": "tsc --project tsconfig.server.json",
+    "heroku-postbuild": "npm run build && npm run build:server",
+    "start": "NODE_ENV=production node dist/server.js"
+  },
+  "author": "Landon Yarrington",
+  "license": "MIT",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "axios": "^0.20.0",
+    "babel-plugin-inline-react-svg": "^1.1.1",
+    "cheerio": "^1.0.0-rc.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-pino-logger": "^5.0.0",
+    "next": "^9.5.2",
+    "pino-pretty": "^4.2.1",
+    "qs": "^6.9.4",
+    "react": "^16.13.1",
+    "react-device-detect": "^1.13.1",
+    "react-dom": "^16.13.1",
+    "react-responsive": "^8.1.0",
+    "react-ticker": "^1.2.2",
+    "sass": "^1.26.10",
+    "typescript": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.22",
+    "@types/express": "^4.17.8",
+    "@types/express-pino-logger": "^4.0.2",
+    "@types/material-ui": "^0.21.8",
+    "@types/next": "^9.0.0",
+    "@types/node": "^14.11.2",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "@zeit/next-typescript": "^1.1.1",
+    "nodemon": "^2.0.4",
+    "ts-node": "^9.0.0"
+  }
+}

@@ -1,0 +1,7 @@
+**/*.pem
+**/node_modules/
+**/build
+**/.vscode/
+**/.env
+**/.DS_Store
+**/.next
