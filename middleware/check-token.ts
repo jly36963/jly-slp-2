@@ -16,12 +16,17 @@ const checkToken = async (
   const { uid, token } = <Headers>req.headers;
   // reject if missing credentials
   if (!token || !uid) return res.status(401);
-  // reject if bad credentials
-  const decodedToken = await auth.verifyIdToken(token);
-  const isValidToken = uid === decodedToken.uid;
-  if (!isValidToken) return res.status(401);
-  // success
-  next();
+  try {
+    // reject if bad credentials
+    const decodedToken = await auth.verifyIdToken(token);
+    const isValidToken = uid === decodedToken.uid;
+    if (!isValidToken) return res.status(401);
+    // success
+    next();
+  } catch (err) {
+    console.log(err);
+    return res.status(500);
+  }
 };
 
 export default checkToken;

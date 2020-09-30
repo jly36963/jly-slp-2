@@ -6,7 +6,6 @@ const RedirectLoggedIn = (
 ): React.FC => {
   const HOC: React.FC = (props: any): JSX.Element => {
     const { authState } = props;
-    console.log(authState);
     // check authState
     if (authState?.currentUser) {
       // redirect if signed in

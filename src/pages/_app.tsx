@@ -93,7 +93,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     let userData: any;
     if (auth.currentUser) {
       // get user data
-      console.log('get user info');
       // *** db fetch logic here ***
       userData = {};
     } else {

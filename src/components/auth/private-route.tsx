@@ -6,7 +6,6 @@ const PrivateRoute = (
 ): React.FC => {
   const HOC: React.FC = (props: any): JSX.Element => {
     const { authState } = props;
-    console.log(authState);
     // check authState
     if (authState && authState.initialized === true) {
       // auth is initialized
