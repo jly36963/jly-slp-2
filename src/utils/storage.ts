@@ -6,10 +6,17 @@ const storage = {
   getItem: (key: string) => {
     if (localStorage) {
       const item = localStorage.getItem(key);
-      // console.log('key', key, 'item', item);
-      if (item) {
-        return JSON.parse(item);
-      } else {
+      try {
+        if (item) {
+          // parse and return result
+          return JSON.parse(item);
+        } else {
+          // no match
+          return null;
+        }
+      } catch {
+        // bad key
+        localStorage.removeItem(key);
         return null;
       }
     }

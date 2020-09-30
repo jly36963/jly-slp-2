@@ -4,6 +4,7 @@ const router = express.Router();
 import qs from 'qs';
 import axios from 'axios';
 import cheerio from 'cheerio';
+import checkToken from '../../middleware/check-token';
 
 // genius token
 const geniusToken: string = process.env.GENIUS_TOKEN;
@@ -13,9 +14,9 @@ const geniusToken: string = process.env.GENIUS_TOKEN;
 
 // @route -- GET /api/genius/lyrics-path
 // @desc -- get genius path
-// @access -- public
+// @access -- protected
 
-router.get('/lyrics-path', async (req, res) => {
+router.get('/lyrics-path', checkToken, async (req, res) => {
   try {
     // get query
     const { songName, artistName }: qs.ParsedQs = req.query;
@@ -43,9 +44,9 @@ router.get('/lyrics-path', async (req, res) => {
 
 // @route -- GET /api/genius/lyrics
 // @desc -- get lyrics using lyrics_path
-// @access -- public
+// @access -- protected
 
-router.get('/lyrics', async (req, res) => {
+router.get('/lyrics', checkToken, async (req, res) => {
   try {
     // get query
     const { lyrics_path }: qs.ParsedQs = req.query;

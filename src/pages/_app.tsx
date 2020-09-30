@@ -12,6 +12,7 @@ import LoadingScreen from '../components/loading-screen';
 // theme imports
 import { lightTheme, darkTheme } from '../theme/theme';
 // util imports
+import { auth } from '../utils/firebase.utils';
 import storage from '../utils/storage';
 
 // component
@@ -50,6 +51,58 @@ const App = ({ Component, pageProps }: AppProps) => {
     return () => clearTimeout(timer);
   }, []);
 
+  // ------------
+  // auth
+  // ------------
+
+  interface AuthState {
+    currentUser: any;
+    userData: any;
+    initialized: boolean;
+  }
+
+  const initialAuthState: AuthState = {
+    currentUser: auth.currentUser || null,
+    userData: null,
+    initialized: false,
+  };
+  const [authState, setAuthState] = useState<AuthState>(initialAuthState);
+
+  // firebase subscription
+  useEffect(() => {
+    // handle status updates (synchronous)
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      // when auth changes -- update 'currentUser', trigger 'userData' update
+      setAuthState({
+        ...authState,
+        currentUser: currentUser,
+        userData: null,
+        initialized: false,
+      });
+    });
+    // cleanup
+    return unsubscribe;
+  }, []);
+
+  // update userData when auth changes
+  useEffect(() => {
+    // only run effect if not initialized
+    if (authState.initialized) return;
+
+    // get userData
+    let userData: any;
+    if (auth.currentUser) {
+      // get user data
+      console.log('get user info');
+      // *** db fetch logic here ***
+      userData = {};
+    } else {
+      // reset user data
+      userData = null;
+    }
+    setAuthState({ ...authState, userData, initialized: true });
+  }, [authState.currentUser, authState.initialized]);
+
   // ---------
   // jsx
   // ---------
@@ -63,13 +116,14 @@ const App = ({ Component, pageProps }: AppProps) => {
       <MainNavbar
         useDarkTheme={useDarkTheme}
         setUseDarkTheme={setUseDarkTheme}
+        authState={authState}
       />
       {/* head */}
       <Head>
         <title>Spotify Lyrics Player</title>
       </Head>
       {/* component */}
-      <Component {...pageProps} />
+      <Component {...pageProps} authState={authState} />
     </ThemeProvider>
   );
 };

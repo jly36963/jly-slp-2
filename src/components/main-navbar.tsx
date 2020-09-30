@@ -1,14 +1,33 @@
 // react imports
-import React from 'react';
+import React, { useState } from 'react';
 // material-ui imports
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Box, MenuItem } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+  Badge,
+  InputBase,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
 // icons
+import MenuIcon from '@material-ui/icons/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import SearchIcon from '@material-ui/icons/Search';
+import HomeIcon from '@material-ui/icons/Home';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 // Router
 import Router from 'next/router';
 import Link from 'next/link';
 // utils
+import { auth } from '../utils/firebase.utils';
 import storage from '../utils/storage';
 
 // styles
@@ -38,17 +57,32 @@ interface Props {
 const MainNavbar: React.FC<Props> = ({
   useDarkTheme,
   setUseDarkTheme,
+  authState,
 }: Props): JSX.Element => {
   // --------------
   // state
   // --------------
 
-  // use custom hook (material-ui)
+  // mui styles
   const classes = useStyles();
+
+  // current user
+  const { currentUser } = authState;
+
+  // menu
+  const [anchorEl, setAnchorEl] = useState(null);
 
   // --------------
   // event
   // --------------
+
+  // menu
+  const handleMenuOpen = (e: React.SyntheticEvent): void => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleMenuClose = (): void => {
+    setAnchorEl(null);
+  };
 
   // darkstate
   const handleDarkSwitchChange = (): void => {
@@ -57,23 +91,78 @@ const MainNavbar: React.FC<Props> = ({
     setUseDarkTheme(newThemeState);
   };
 
+  // auth
+  const handleLogin = (): void => {
+    Router.push('/auth/login');
+  };
+  const handleSignOut = async (): Promise<void> => {
+    // sign out firebase user
+    await auth.signOut();
+  };
+  const handleHome = (): void => {
+    Router.push('/');
+  };
+
+  // --------------
+  // jsx
+  // --------------
+
   return (
     <Box className={classes.root}>
       <AppBar color="inherit" position="fixed">
         <Toolbar>
           <Link href={`/`}>
             <a className={classes.unstyledLink}>
-              <Typography variant="h5" onClick={() => Router.push('/')}>
+              <Typography variant="h5" onClick={handleHome}>
                 Spotify Lyrics Player
               </Typography>
             </a>
           </Link>
           {/* pushes title left, buttons right */}
           <div className={classes.grow} />
-          {/* theme */}
-          <MenuItem onClick={handleDarkSwitchChange}>
-            <Brightness4Icon className={classes.menuIcon} />
-          </MenuItem>
+          {/* menu */}
+          <IconButton onClick={handleMenuOpen}>
+            <MenuIcon />
+          </IconButton>
+
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            // must be provided if anchorOrigin.vertical is changed
+            getContentAnchorEl={null}
+          >
+            <MenuItem onClick={handleDarkSwitchChange}>
+              <Brightness4Icon className={classes.menuIcon} />
+              Theme
+            </MenuItem>
+
+            <MenuItem onClick={handleHome}>
+              <HomeIcon className={classes.menuIcon} />
+              Home
+            </MenuItem>
+
+            {currentUser ? (
+              <MenuItem onClick={handleSignOut}>
+                <ExitToAppIcon className={classes.menuIcon} />
+                Log Out
+              </MenuItem>
+            ) : (
+              <MenuItem onClick={handleLogin}>
+                <AccountCircleIcon className={classes.menuIcon} />
+                Log In
+              </MenuItem>
+            )}
+          </Menu>
         </Toolbar>
       </AppBar>
     </Box>

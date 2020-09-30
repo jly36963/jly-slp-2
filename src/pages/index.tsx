@@ -3,20 +3,21 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 // mui imports
 import { Box } from '@material-ui/core';
 // component imports
+import PrivateRoute from '../components/auth/private-route';
 import Player from '../components/player';
 import CustomSnackbar from '../components/snackbar';
-import AuthorizeSpotify from '../components/auth/authorize-spotify';
+import AuthorizeSpotify from '../components/spotify/authorize-spotify';
 import NothingPlaying from '../components/player/nothing-playing';
 // util imports
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import qs from 'qs';
 import useInterval from '../utils/useInterval';
-import validLyricPath from '../utils/valid-lyric-path';
+import validateLyricPath from '../utils/validate-lyric-path';
 import removeSpecialCharacters from '../utils/remove-special-characters';
 import storage from '../utils/storage';
 
 // component
-const Landing: React.FC = (): JSX.Element => {
+const Landing: React.FC = ({ authState }: any): JSX.Element => {
   // ---------
   // state
   // ---------
@@ -119,9 +120,20 @@ const Landing: React.FC = (): JSX.Element => {
   }, []);
 
   const getToken = useCallback((): void => {
+    // use access token from ls (if exists)
+    const lsToken: string | null = storage.getItem('spotify_token');
+    if (lsToken) {
+      setSpotifyToken(lsToken);
+      return;
+    }
+    // get from hash
     const hash: any = getHash();
     const { access_token } = hash;
-    setSpotifyToken(access_token);
+    if (access_token) {
+      // set and save token
+      setSpotifyToken(access_token);
+      storage.setItem('spotify_token', access_token);
+    }
   }, []);
 
   const resetState = useCallback((): void => {
@@ -181,6 +193,7 @@ const Landing: React.FC = (): JSX.Element => {
         if (err.response && err.response.status === 401) {
           // bad token
           setSpotifyToken(null);
+          storage.removeItem('spotify_token');
         }
         setFeedback({
           type: 'error',
@@ -289,6 +302,7 @@ const Landing: React.FC = (): JSX.Element => {
   const getLyricsPath = useCallback(async () => {
     if (songItem) {
       try {
+        // query
         const songName: string = removeSpecialCharacters(songItem.name);
         const artistName: string = removeSpecialCharacters(
           songItem.artists[0].name,
@@ -297,17 +311,27 @@ const Landing: React.FC = (): JSX.Element => {
           songName,
           artistName,
         });
+        // url
         const url: string = `/api/genius/lyrics-path?${query}`;
+        // headers
+        const token: string = await authState.currentUser.getIdToken();
+        const { uid } = authState.currentUser;
+        const headers = { token, uid };
         // request
         const response = await axios({
           method: 'get',
           url,
+          headers,
         });
         const { song } = response.data;
         const { id, path } = song;
         // check if path is valid (genius sometimes returns bad URLs)
-        const valid: boolean = validLyricPath(path, songName, artistName);
-        if (!valid) throw new Error();
+        const validLyricPath: boolean = validateLyricPath(
+          path,
+          songName,
+          artistName,
+        );
+        if (!validLyricPath) throw new Error();
         set_lyrics_path(path);
       } catch (err) {
         console.log(err);
@@ -326,14 +350,21 @@ const Landing: React.FC = (): JSX.Element => {
   const getLyrics = useCallback(async () => {
     if (songItem && lyrics_path) {
       try {
+        // query
         const query = qs.stringify({
           lyrics_path,
         });
+        // url
         const url: string = `/api/genius/lyrics?${query}`;
+        // headers
+        const token: string = await authState.currentUser.getIdToken();
+        const { uid } = authState.currentUser;
+        const headers = { token, uid };
         // request
         const response = await axios({
           method: 'get',
           url,
+          headers,
         });
         const { lyrics } = response.data;
         setLyrics(lyrics);
@@ -433,4 +464,4 @@ const Landing: React.FC = (): JSX.Element => {
   );
 };
 
-export default Landing;
+export default PrivateRoute(Landing);
