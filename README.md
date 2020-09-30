@@ -56,7 +56,7 @@ Users must authenticate with Spotify and grant authorization to this app.
 - `middleware/` middleware for express
 - `models/` db models (not implemented yet)
 - `public/` static assets
-- `src/`
+- `src/` front-end code
   - `components/` reusable components and partials
   - `config/` config files for front-end
   - `images/` images used in app
@@ -79,7 +79,8 @@ Users must authenticate with Spotify and grant authorization to this app.
 ## Spotify Response Structure
 
 ```js
-const songItemStructure = {
+// spotify current song response
+const spotifyResponseStructure = {
   album: {
     href: String, // api endpoint
     images: [{ url: String, height: Number }],
@@ -96,4 +97,24 @@ const songItemStructure = {
   name: String, // song title
   duration_ms: Number,
 };
+```
+
+## Genius Response Structure
+
+```js
+// genius search response
+// geniusResponseStructure.data.response.hits[0].result.id
+const geniusResponseStructure {
+  data: {
+    response: {
+      hits: [
+        {
+          result: {
+            id: Number,
+          },
+        },
+      ];
+    }
+  }
+}
 ```

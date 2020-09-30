@@ -9,9 +9,6 @@ import checkToken from '../../middleware/check-token';
 // genius token
 const geniusToken: string = process.env.GENIUS_TOKEN;
 
-// genius response shape
-// geniusResponse.data.response.hits[0].result.id
-
 // @route -- GET /api/genius/lyrics-path
 // @desc -- get genius path
 // @access -- protected

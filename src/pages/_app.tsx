@@ -74,7 +74,6 @@ const App = ({ Component, pageProps }: AppProps) => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       // when auth changes -- update 'currentUser', trigger 'userData' update
       setAuthState({
-        ...authState,
         currentUser: currentUser,
         userData: null,
         initialized: false,

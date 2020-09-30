@@ -11,7 +11,7 @@ const dev: boolean = process.env.NODE_ENV !== 'production';
 
 // create next.js app
 const app = next({
-  dir: '.', // base directory where everything is, could move to src later
+  dir: '.',
   dev,
 });
 

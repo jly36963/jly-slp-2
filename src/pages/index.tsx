@@ -104,6 +104,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
   // helper methods
   // ---------
 
+  // get hash from current url
   const getHash = useCallback(() => {
     const hash = window.location.hash
       .substring(1)
@@ -119,6 +120,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     return hash;
   }, []);
 
+  // get spotify token
   const getToken = useCallback((): void => {
     // use access token from ls (if exists)
     const lsToken: string | null = storage.getItem('spotify_token');
@@ -136,6 +138,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     }
   }, []);
 
+  // reset song, lyrics, and player state
   const resetState = useCallback((): void => {
     setLyrics(initialState.lyrics);
     setSongItem(initialState.songItem);
@@ -145,6 +148,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     set_lyrics_path(initialState.lyrics_path);
   }, []);
 
+  // get currently playing song from spotify api
   const getCurrentlyPlaying = useCallback(async (): Promise<void> => {
     // only execute if spotifyToken
     if (spotifyToken) {
@@ -206,6 +210,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     }
   }, [spotifyToken, songItem, shuffle_state, repeat_state]);
 
+  // return next repeat state in cycle
   const nextRepeatState = useCallback((state: string): string => {
     let newState: string | undefined;
     switch (state) {
@@ -224,6 +229,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     return newState;
   }, []);
 
+  // make playback request to spotify api
   const sendSpotifyPlaybackRequest = useCallback(
     async (action: string): Promise<void> => {
       // request
@@ -299,6 +305,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     [spotifyToken, shuffle_state, repeat_state, is_playing],
   );
 
+  // get lyrics path from genius api (using song information from spotify)
   const getLyricsPath = useCallback(async () => {
     if (songItem) {
       try {
@@ -347,6 +354,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
     }
   }, [songItem, showLyrics]);
 
+  // get lyrics for current playing song
   const getLyrics = useCallback(async () => {
     if (songItem && lyrics_path) {
       try {
