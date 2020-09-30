@@ -10,7 +10,7 @@ import {
   clientId,
   redirectUri,
   scopes,
-} from '../../utils/spotify-config';
+} from '../../config/spotify-config';
 
 const AuthorizeSpotify: React.FC = (): JSX.Element => {
   // spotify auth url (get default from config, update based on 'window')

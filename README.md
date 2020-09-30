@@ -51,13 +51,14 @@ Users must authenticate with Spotify and grant authorization to this app.
 
 - `.next/` where Next's SSR magic happens (dev server, and production build)
 - `api/` api routes (src)
-- `config/` config files
+- `config/` config files for back-end
 - `dist/` tsc output (server and api routes)
 - `middleware/` middleware for express
 - `models/` db models (not implemented yet)
 - `public/` static assets
 - `src/`
   - `components/` reusable components and partials
+  - `config/` config files for front-end
   - `images/` images used in app
   - `pages/` route components
   - `theme/` mui themes (with overrides)

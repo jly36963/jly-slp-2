@@ -45,14 +45,15 @@ var router = express_1.default.Router();
 var qs_1 = __importDefault(require("qs"));
 var axios_1 = __importDefault(require("axios"));
 var cheerio_1 = __importDefault(require("cheerio"));
+var check_token_1 = __importDefault(require("../../middleware/check-token"));
 // genius token
 var geniusToken = process.env.GENIUS_TOKEN;
 // genius response shape
 // geniusResponse.data.response.hits[0].result.id
 // @route -- GET /api/genius/lyrics-path
 // @desc -- get genius path
-// @access -- public
-router.get('/lyrics-path', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+// @access -- protected
+router.get('/lyrics-path', check_token_1.default, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, songName, artistName, songQS, url, headers, geniusResponse, hits, song, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -85,8 +86,8 @@ router.get('/lyrics-path', function (req, res) { return __awaiter(void 0, void 0
 }); });
 // @route -- GET /api/genius/lyrics
 // @desc -- get lyrics using lyrics_path
-// @access -- public
-router.get('/lyrics', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+// @access -- protected
+router.get('/lyrics', check_token_1.default, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var lyrics_path, headers, url, response, html, $, lyrics, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
