@@ -72,13 +72,13 @@ const MobilePlayerNoLyrics: React.FC = ({
           </Box>
 
           <Box className={classes.playerText}>
-            <Typography variant="h6" className={classes.playerTextLine}>
+            <Typography variant="h6">
               <TextTicker text={songItem.name} />
             </Typography>
-            <Typography variant="h6" className={classes.playerTextLine}>
+            <Typography variant="h6">
               <TextTicker text={songItem.artists[0].name} />
             </Typography>
-            <Typography variant="h6" className={classes.playerTextLine}>
+            <Typography variant="h6">
               <TextTicker text={songItem.album.name} />
             </Typography>
           </Box>

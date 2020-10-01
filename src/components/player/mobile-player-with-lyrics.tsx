@@ -43,17 +43,12 @@ const useStyles = makeStyles({
     height: 200,
   },
   playerText: {
-    width: '150px',
+    width: 150,
     textAlign: 'center',
-  },
-  playerTextLine: {
-    overflowX: 'scroll',
-    whiteSpace: 'nowrap',
   },
   lyrics: {
     width: 320,
     height: '100%',
-    // scrollbar
     overflowY: 'scroll',
     scrollbarWidth: 'none',
     '-ms-overflow-style': 'none',
@@ -108,14 +103,14 @@ const MobilePlayerWithLyrics: React.FC = ({
               />
             </Box>
             <Box className={classes.playerText}>
-              <Typography className={classes.playerTextLine}>
-                <TextTicker text={songItem.name} />
+              <Typography>
+                <TextTicker width={150} text={songItem.name} />
               </Typography>
-              <Typography className={classes.playerTextLine}>
-                <TextTicker text={songItem.artists[0].name} />
+              <Typography>
+                <TextTicker width={150} text={songItem.artists[0].name} />
               </Typography>
-              <Typography className={classes.playerTextLine}>
-                <TextTicker text={songItem.album.name} />
+              <Typography>
+                <TextTicker width={150} text={songItem.album.name} />
               </Typography>
             </Box>
           </Box>

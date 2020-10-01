@@ -34,7 +34,7 @@ router.get('/lyrics-path', checkToken, async (req, res) => {
     // response
     return res.status(200).json({ song });
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     return res.status(500);
   }
 });

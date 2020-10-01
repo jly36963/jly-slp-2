@@ -36,8 +36,9 @@ Users must authenticate with Spotify and grant authorization to this app.
 
 ## Issues
 
-- marquee / ticker issue
 - retry lyric fetch if parentheses / feature
+- get lighthouse score up
+- less 'any' types
 
 ## Todo
 
@@ -45,7 +46,6 @@ Users must authenticate with Spotify and grant authorization to this app.
 - replace spotify auth logic (redirect -> backend requests) if possible.
 - background img/gradient/blur
 - song position (slider)
-- loading/spinner while waiting for playback action
 
 ## App Structure
 

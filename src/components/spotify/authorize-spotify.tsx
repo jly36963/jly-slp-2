@@ -20,7 +20,6 @@ const AuthorizeSpotify: React.FC = (): JSX.Element => {
     const { protocol, hostname, port } = window.location;
     if (hostname === 'localhost') {
       const updatedUri: string = `${protocol}//${hostname}:${port}/`;
-      console.log(updatedUri);
       setUri(updatedUri);
     }
   }, []);

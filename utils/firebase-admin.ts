@@ -1,7 +1,11 @@
 // imports
-import admin from 'firebase-admin';
+import admin, { ServiceAccount } from 'firebase-admin';
+import config from '../config/firebase-admin.config';
+
 // app
-const projectId = 'jly-slp-2';
-const app = admin.initializeApp({ projectId });
+const serviceAccount = <ServiceAccount>config;
+const app = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 // auth
 export const auth = app.auth();

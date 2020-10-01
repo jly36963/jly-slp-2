@@ -193,11 +193,16 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
           }
         }
       } catch (err) {
-        console.log(err);
         if (err.response && err.response.status === 401) {
           // bad token
           setSpotifyToken(null);
           storage.removeItem('spotify_token');
+          return;
+        }
+        if (err.response && err.response.status === 503) {
+          // failed to connect
+          console.log('Spotify service unavailable.');
+          return;
         }
         setFeedback({
           type: 'error',
@@ -278,6 +283,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
             method,
             url,
             headers,
+            timeout: 2000,
           };
           if (query) {
             const axiosQS = qs.stringify(query);
@@ -293,11 +299,19 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
               set_is_playing(!is_playing);
             }
           } catch (err) {
-            setFeedback({
-              type: 'error',
-              message: 'Action unavailable',
-              open: true,
-            });
+            // spotify rejected playback request
+            if (err.response && err.response.status === 403) {
+              setFeedback({
+                type: 'info',
+                message: 'Action unavailable',
+                open: true,
+              });
+              return;
+            }
+            // request aborted
+            if (err.code === 'ECONNABORTED') {
+              console.log('Spotify playback request timed out');
+            }
           }
         }
       }
@@ -329,6 +343,7 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
           method: 'get',
           url,
           headers,
+          timeout: 2000,
         });
         const { song } = response.data;
         const { id, path } = song;
@@ -341,8 +356,13 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
         if (!validLyricPath) throw new Error();
         set_lyrics_path(path);
       } catch (err) {
-        console.log(err);
         if (showLyrics) {
+          // request aborted
+          if (err.code === 'ECONNABORTED') {
+            console.log('Genius request timed out');
+            return;
+          }
+          // request failed
           setFeedback({
             type: 'info',
             message: 'Could not get lyrics from Genius',
@@ -373,12 +393,18 @@ const Landing: React.FC = ({ authState }: any): JSX.Element => {
           method: 'get',
           url,
           headers,
+          timeout: 4000,
         });
         const { lyrics } = response.data;
         setLyrics(lyrics);
       } catch (err) {
-        console.log(err);
         if (showLyrics) {
+          // request was aborted (exceeded ttl)
+          if (err.code === 'ECONNABORTED') {
+            console.log('Genius request timed out');
+            return;
+          }
+          // request failed
           setFeedback({
             type: 'info',
             message: 'Could not get lyrics from Genius',

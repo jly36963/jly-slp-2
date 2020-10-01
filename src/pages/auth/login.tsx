@@ -1,5 +1,5 @@
 // react imports
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState } from 'react';
 // next imports
 import Router from 'next/router';
 import Link from 'next/link';

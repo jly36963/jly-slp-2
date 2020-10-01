@@ -1,5 +1,5 @@
 // react imports
-import React, { useMemo } from 'react';
+import React from 'react';
 // mui imports
 import { Button, Box, Typography, LinearProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -47,13 +47,6 @@ const useStyles = makeStyles((theme) => ({
   playerText: {
     width: '200px',
     textAlign: 'center',
-  },
-  playerTextLine: {
-    overflowX: 'scroll',
-    whiteSpace: 'nowrap',
-    scrollbarWidth: 'none',
-    '-ms-overflow-style': 'none',
-    '&::-webkit-scrollbar': { display: 'none' },
   },
   lyrics: {
     width: 320,
@@ -103,13 +96,13 @@ const Player: React.FC = ({
                 <img src={albumImageSrc} alt="album art" />
               </Box>
               <Box className={classes.playerText}>
-                <Typography variant="h6" className={classes.playerTextLine}>
+                <Typography variant="h6">
                   <TextTicker text={songItem.name} />
                 </Typography>
-                <Typography variant="h6" className={classes.playerTextLine}>
+                <Typography variant="h6">
                   <TextTicker text={songItem.artists[0].name} />
                 </Typography>
-                <Typography variant="h6" className={classes.playerTextLine}>
+                <Typography variant="h6">
                   <TextTicker text={songItem.album.name} />
                 </Typography>
               </Box>

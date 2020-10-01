@@ -1,12 +1,11 @@
 // react imports
-import React, { useMemo } from 'react';
+import React from 'react';
 // mui imports
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Box, Typography, LinearProgress } from '@material-ui/core';
 // component imports
 import PaddedPaper from '../padded-paper';
 import FlexContainer from '../flex-container';
-import AlbumArtBackground from './album-art-background';
 import TextTicker from '../text-ticker';
 // icon imports
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -31,13 +30,6 @@ const useStyles = makeStyles((theme) => ({
   playerText: {
     width: '200px',
     textAlign: 'center',
-  },
-  playerTextLine: {
-    overflowX: 'scroll',
-    whiteSpace: 'nowrap',
-    scrollbarWidth: 'none',
-    '-ms-overflow-style': 'none',
-    '&::-webkit-scrollbar': { display: 'none' },
   },
   grow: {
     flexGrow: 1,
@@ -76,13 +68,13 @@ const PlayerNoLyrics: React.FC = ({
               </Box>
 
               <Box className={classes.playerText}>
-                <Typography variant="h6" className={classes.playerTextLine}>
+                <Typography variant="h6">
                   <TextTicker text={songItem.name} />
                 </Typography>
-                <Typography variant="h6" className={classes.playerTextLine}>
+                <Typography variant="h6">
                   <TextTicker text={songItem.artists[0].name} />
                 </Typography>
-                <Typography variant="h6" className={classes.playerTextLine}>
+                <Typography variant="h6">
                   <TextTicker text={songItem.album.name} />
                 </Typography>
               </Box>
