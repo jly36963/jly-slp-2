@@ -9,3 +9,6 @@ const config = {
 };
 
 export default config;
+
+// privateKey has the replace method because heroku messes up the config var
+// https://stackoverflow.com/a/41044630

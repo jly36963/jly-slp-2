@@ -15,17 +15,17 @@ const checkToken = async (
 ) => {
   const { uid, token } = <Headers>req.headers;
   // reject if missing credentials
-  if (!token || !uid) return res.status(401);
+  if (!token || !uid) return res.status(401).json({});
   try {
     // reject if bad credentials
     const decodedToken = await auth.verifyIdToken(token);
     const isValidToken = uid === decodedToken.uid;
-    if (!isValidToken) return res.status(401);
+    if (!isValidToken) return res.status(401).json({});
     // success
     next();
   } catch (err) {
     console.log(err);
-    return res.status(500);
+    return res.status(500).json({});
   }
 };
 
